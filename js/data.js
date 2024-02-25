@@ -1,11 +1,8 @@
 
-import QMEMD from '../data/Qualifier Main Event Map Data.json' assert { type: 'json' };
-import MEMD from '../data/Main Event Map Data.json' assert { type: 'json' };
-import QMD from '../data/Qualifier Map Data.json' assert { type: 'json' };
-import MD from '../data/Map Data.json' assert { type: 'json' };
+import Data from '../data/Data.json' assert { type: 'json' };
 
-var dt;
-
+console.log(Data);
+var dt = Data.filter(element => element.filter == "11");
 
 function callback(mutationsList) {
   mutationsList.forEach((mutation) => {
@@ -37,17 +34,25 @@ function stage(x) {
 }
 
 function updateData() {
+  //console.log("updating data");
   dt.clear();
-  var file = "";
-  if (document.querySelector("#qualifier").classList.contains('active')) {
-    file += "Q";
+  var dt_new = Data; //Data.filter(element => element.Player_Civ == "Franks")
+  var civ1 = document.querySelector('[class="select2-selection select2-selection--single"]').children[0].title;
+  var civ2 = document.querySelectorAll('[class="select2-selection select2-selection--single"]')[1].children[0].title;
+  var map = document.getElementById('MCmap').value;
+  var filter = "";
+  if (document.querySelector("#qualifier").getAttribute("data-active") != "false") {
+    filter = "1";
+  } else {
+    filter = "0";
   }
-  if (document.querySelector("#mainevent").classList.contains('active')) {
-    file += "ME";
+  if (document.querySelector("#mainevent").getAttribute("data-active") != "false") {
+    filter = filter+"1";
+  } else {
+    filter = filter+"0";
   }
-  file += "MD";
-  // console.log(file);
-  dt.rows.add(eval(file));
+  dt_new = dt_new.filter(element => element.filter == filter);
+  dt.rows.add(dt_new);
   dt.draw();
 }
 
@@ -61,20 +66,20 @@ dt = $('#example').DataTable( {
     pageLength: 100,
     dom: "t",
     columns: [
-      { title: 'Map' },
-      { title: 'Played' },
-      { title: 'First Ban' },
-      { title: 'Ban' },
-      { title: 'Pick' },
-      { title: 'Remaining' },
-      { title: 'First Ban%' },
-      { title: 'Ban%' },
-      { title: 'Pick%' },
-      { title: 'Remaining%' },
-      { title: 'Wins' },
-      { title: 'Win%' }
+      { data: 'Map', title: 'Map' },
+      { data: 'Played', title: 'Played' },
+      { data: 'First Ban', title: 'First Ban' },
+      { data: 'Ban', title: 'Ban' },
+      { data: 'Pick', title: 'Pick' },
+      { data: 'Remaining', title: 'Remaining' },
+      { data: 'First Ban%', title: 'First Ban%' },
+      { data: 'Ban%', title: 'Ban%' },
+      { data: 'Pick%', title: 'Pick%' },
+      { data: 'Remaining%', title: 'Remaining%' },
+      { data: 'Wins', title: 'Wins' },
+      { data: 'Win%', title: 'Win%' }
       ],
-      data: QMD,
+      data: dt,
 
     autoWidth: true
 });
