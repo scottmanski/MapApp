@@ -1,7 +1,6 @@
 
 import Data from '../data/Data.json' assert { type: 'json' };
 
-console.log(Data);
 var dt = Data.filter(element => element.filter == "11");
 
 function callback(mutationsList) {
@@ -27,19 +26,18 @@ function stage(x) {
   
   if (y.classList.contains('active')) {
     y.children[0].style.display = "none";
+    y.setAttribute("data-active", "false");
   } else {
     y.children[0].style.display = "inline-block";
+    y.setAttribute("data-active", "true");
   }
-
 }
 
 function updateData() {
   //console.log("updating data");
   dt.clear();
   var dt_new = Data; //Data.filter(element => element.Player_Civ == "Franks")
-  var civ1 = document.querySelector('[class="select2-selection select2-selection--single"]').children[0].title;
-  var civ2 = document.querySelectorAll('[class="select2-selection select2-selection--single"]')[1].children[0].title;
-  var map = document.getElementById('MCmap').value;
+
   var filter = "";
   if (document.querySelector("#qualifier").getAttribute("data-active") != "false") {
     filter = "1";
