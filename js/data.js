@@ -1,10 +1,16 @@
 
-import Data from '../data/Data.json' assert { type: 'json' };
-import ts from '../data/ts.json' assert { type: 'json' };
+//import Data from '../data/Data.json' assert { type: 'json' };
+//import ts from '../data/ts.json' assert { type: 'json' };
 
-document.getElementById("Mlastupdate").children[0].innerText = ts;
+var Data, dt;
+$.getJSON('./data/Data.json', function( data ) {
+  Data = data;
+  updateData();
+});
 
-var dt = Data.filter(element => element.filter == "11");
+$.getJSON('./data/ts.json', function( data ) {
+  document.getElementById("Mlastupdate").children[0].innerText = data;
+});
 
 function callback(mutationsList) {
   mutationsList.forEach((mutation) => {
@@ -82,7 +88,7 @@ dt = $('#example').DataTable( {
       { data: 'Wins', title: 'Wins' },
       { data: 'Win%', title: 'Win%' }
       ],
-      data: dt,
+      data: null, //dt,
 
     autoWidth: true
 });
