@@ -8,9 +8,19 @@ $.getJSON('./data/Data.json', function( data ) {
   updateData();
 });
 
-$.getJSON('./data/ts.json', function( data ) {
-  document.getElementById("Mlastupdate").children[0].innerText = "test"; //data;
+//$.getJSON('./data/ts.json', function( data ) {
+//  document.getElementById("Mlastupdate").children[0].innerText = data;
+//});
+
+$.ajax({
+    dataType: "json",
+    url: './data/ts.json',
+    cache: false,  //do not cache
+    success: function(data){
+        document.getElementById("Mlastupdate").children[0].innerText = data;
+    }
 });
+
 
 function callback(mutationsList) {
   mutationsList.forEach((mutation) => {
