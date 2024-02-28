@@ -9,7 +9,7 @@ $.getJSON('./data/Data.json', function( data ) {
 });
 
 $.getJSON('./data/ts.json', function( data ) {
-  document.getElementById("Mlastupdate").children[0].innerText = data;
+  document.getElementById("Mlastupdate").children[0].innerText = "test"; //data;
 });
 
 function callback(mutationsList) {
