@@ -2,24 +2,59 @@
 //import Data from '../data/Data.json' assert { type: 'json' };
 //import ts from '../data/ts.json' assert { type: 'json' };
 
-var Data, dt;
+var Data, dt, previous;
 $.getJSON('./data/Data.json', function( data ) {
   Data = data;
   updateData();
 });
 
+function dataUpdate() {
+  $.ajax({
+    dataType: "json",
+    url: './data/Data.json',
+    cache: false,  //do not cache
+    success: function(data){
+      Data = data;
+      updateData();
+    }
+});
+}
+
+
+
 //$.getJSON('./data/ts.json', function( data ) {
 //  document.getElementById("Mlastupdate").children[0].innerText = data;
 //});
 
-$.ajax({
+function timeUpdate() {
+  $.ajax({
     dataType: "json",
     url: './data/ts.json',
     cache: false,  //do not cache
     success: function(data){
-        document.getElementById("Mlastupdate").children[0].innerText = data;
+      if (previous != null) {
+        if (data[0] !== previous[0]) {
+          //document.getElementById("Mlastupdate").children[0].innerText = data;
+          var div = document.getElementsByClassName("alert")[0];
+          div.style.display = "block";
+          //div.style.opacity = "1";
+          setTimeout(function(){ div.style.opacity = "1"; }, 600);
+          previous = data;
+          //dataUpdate();
+        }
+      } else {
+          document.getElementById("Mlastupdate").children[0].innerText = data;
+          //document.getElementById("newdata").style.display = "block";
+          previous = data;
+          //dataUpdate();
+      }
+        setTimeout(timeUpdate, 60000);
     }
 });
+}
+
+timeUpdate();
+
 
 
 function callback(mutationsList) {
@@ -102,3 +137,16 @@ dt = $('#example').DataTable( {
 
     autoWidth: true
 });
+
+
+
+var close = document.getElementsByClassName("closebtn");
+var i;
+
+for (i = 0; i < close.length; i++) {
+  close[i].onclick = function(){
+    var div = this.parentElement;
+    div.style.opacity = "0";
+    setTimeout(function(){ div.style.display = "none"; }, 600);
+  }
+}
